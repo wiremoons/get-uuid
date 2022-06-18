@@ -66,22 +66,33 @@ ENDIF()
 # add flag to hide depreciation code warnings
 #add_definitions(-DAPPROVAL_TESTS_HIDE_DEPRECATED_CODE=1)
 
+# set compiler build flags
+message(NOTICE "Checking and setting compiler build flags")
+add_compile_options(-Wall -Wextra -pedantic -Wno-deprecated -static)
 # add additional compiler options (NB build fails with: '-Werror')
 # '-Qunused-arguments' is clang only option and breaks GCC builds
 # Silence 'zlib' build warnings: -Qunused-arguments
 # Silence 'curl' build warnings: -Wno-deprecated
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wall -Wextra -pedantic -Qunused-arguments -Wno-deprecated -static)
-else()
-    add_compile_options(-Wall -Wextra -pedantic -Wno-deprecated -static)
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag(-Qunused-arguments CXX_SUPPORTS_QUNUSED-ARGUMENTS)
+if(CXX_SUPPORTS_QUNUSED-ARGUMENTS)
+    add_compile_options(-Qunused-arguments)
+    message(STATUS "Compiler '-Qunused-arguments' option flag added")
 endif()
 
 add_executable(get-uuid ${SOURCES})
+
+INCLUDE(CheckFunctionExists)
+CHECK_FUNCTION_EXISTS(uuid_generate_random HAVE_UUID_GENERATE_RANDOM)
 
 # Use 'vcpkg' if available
 if (DEFINED ENV{VCPKG_ROOT} AND DEFINED CMAKE_TOOLCHAIN_FILE)
     find_package(fmt CONFIG REQUIRED)
     find_package(argparse CONFIG REQUIRED)
+    if (NOT HAVE_UUID_GENERATE_RANDOM)
+        find_package(libuuid CONFIG REQUIRED)
+    endif()
+
 else ()
     set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE BOOL "")
     include(FetchContent)
@@ -99,7 +110,18 @@ else ()
       GIT_TAG v2.2)
     FetchContent_MakeAvailable(argparse)
 
+    if (NOT HAVE_UUID_GENERATE_RANDOM)
+        FetchContent_Declare(
+            libuuid
+            GIT_REPOSITORY https://sourceforge.net/projects/libuuid
+            GIT_TAG 1.0.3)
+        FetchContent_MakeAvailable(libuuid)
+    endif()
+
 endif()
 
-target_link_libraries(get-uuid PRIVATE fmt::fmt argparse::argparse)
-
+if (HAVE_UUID_GENERATE_RANDOM)
+    target_link_libraries(get-uuid PRIVATE fmt::fmt argparse::argparse)
+else ()
+    target_link_libraries(get-uuid PRIVATE fmt::fmt argparse::argparse libuuid::libuuid)
+endif()
