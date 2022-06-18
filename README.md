@@ -56,8 +56,8 @@ export VCPKG_ROOT=/Users/simon/.vcpkg
 
 The following C++ libraries are included by `vcpkg` or `cmake` and used by `get-uuid`:
 
-- [`argpass` by @p-ranav](https://github.com/p-ranav/argparse) - to manage the commond line argument;
-- [`fmt`](https://github.com/fmtlib/fmt) - fast and safe alternative to C stdio and C++ iostreams.
+- [argpass by @p-ranav](https://github.com/p-ranav/argparse) - command line argument parser for modern C++;
+- [fmt by @fmtlib](https://github.com/fmtlib/fmt) - fast and safe alternative to C stdio and C++ iostreams.
 
 
 ## License
