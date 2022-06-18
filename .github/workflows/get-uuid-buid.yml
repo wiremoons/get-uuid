@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    -name: Install vcpkg
+    - name: Install vcpkg
       run: |
         git clone https://github.com/microsoft/vcpkg ${{env.BUILD_TYPE}}
         sh ${{env.BUILD_TYPE}}/bootstrap-vcpkg.sh
