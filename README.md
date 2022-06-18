@@ -31,13 +31,11 @@ BBCB9541-1A50-4C44-BEA6-6C9E3F42E2D0
 
 A C++ compiler is required to build `get-uuid`. 
 
-`cmake` is recommended to perform the build. 
+- `cmake` is recommended to perform the build.
+- `vcpkg` is recommended to perform the config and package management. 
 
-If the computer the build is being performed on has `vcpkg` available, then it will be 
-used for building the library dependencies. Otherwise `cmake` will use its 
-*fecthContent* feature instead.
 
-In order to build using `vcpkg` or `cmake` directly, clone this repo and then run:
+In order to build using `vcpkg` and `cmake`, clone this repo and then run:
 
 ```console
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
@@ -46,10 +44,10 @@ cmake --build build
 
 The resulting program is in located the `./bin/` sub-directory.
 
-To detect and use `vcpkg` the `cmake` detection process looks for the environment variable `VCPKG_ROOT`. Set this to the location of `vcpkg` installation.
+To detect and use `vcpkg` the `cmake` process looks for the environment variable `VCPKG_ROOT`. Set this to the location of `vcpkg` installation. For assistance wiht installing 'vcpkg' see: [Get started with vcpkg](https://vcpkg.io/en/getting-started.html).
 ```
 # Most Unix (Linux, macOS, etc):
-export VCPKG_ROOT=/Users/simon/.vcpkg
+export VCPKG_ROOT=~/.vcpkg
 ```
 
 ## Library Dependencies
@@ -57,7 +55,8 @@ export VCPKG_ROOT=/Users/simon/.vcpkg
 The following C++ libraries are included by `vcpkg` or `cmake` and used by `get-uuid`:
 
 - [argpass by @p-ranav](https://github.com/p-ranav/argparse) - command line argument parser for modern C++;
-- [fmt by @fmtlib](https://github.com/fmtlib/fmt) - fast and safe alternative to C stdio and C++ iostreams.
+- [fmt by @fmtlib](https://github.com/fmtlib/fmt) - fast and safe alternative to C stdio and C++ iostreams;
+- [libuuid](https://sourceforge.net/projects/libuuid/) - a Linux OS only additional dependency.
 
 
 ## License
