@@ -23,6 +23,8 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  # Set location for vcpkg install
+  VCPKG_ROOT: $HOME/.vcpkg
 
 jobs:
   analyze:
@@ -56,6 +58,12 @@ jobs:
         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg ${{env.VCPKG_ROOT}}
+        sh ${{env.VCPKG_ROOT}}/bootstrap-vcpkg.sh
+        ${{env.VCPKG_ROOT}}/vcpkg --version
+        echo "${{env.VCPKG_ROOT}}" >> $GITHUB_PATH
         
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
