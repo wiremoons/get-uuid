@@ -8,11 +8,11 @@
 #
 cmake_minimum_required(VERSION 3.20)
 message(STATUS "CMake version is: ${CMAKE_VERSION}")
-set (CMAKE_DEBUG_FIND_MODE=0)
+set (CMAKE_DEBUG_FIND_MODE=1)
 
 # required before 'project' below - detects and uses 'vcpkg' if available.
 # to test CMake 'FetchContent' use: 'unset VCPKG_ROOT'
-message(NOTICE "Looking for 'vcpkg' install")
+message(NOTICE "++ Looking for 'vcpkg' install ++")
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   message(STATUS "Using 'vcpkg' found at: $ENV{VCPKG_ROOT}")
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
@@ -44,7 +44,7 @@ message(NOTICE "Final application (binary) files are output to: ${CMAKE_RUNTIME_
 file(GLOB SOURCES "./src/*.cc")
 
 # cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-message(NOTICE "Checking if 'Debug' or 'Release' build requested")
+message(NOTICE "++ Checking if 'Debug' or 'Release' build requested ++")
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     add_definitions(-DDEBUG=1)
     add_definitions(-DNDEBUG)
@@ -67,7 +67,7 @@ ENDIF()
 #add_definitions(-DAPPROVAL_TESTS_HIDE_DEPRECATED_CODE=1)
 
 # set compiler build flags
-message(NOTICE "Checking and setting compiler build flags")
+message(NOTICE "++ Checking and setting compiler build flags ++")
 add_compile_options(-Wall -Wextra -pedantic -Wno-deprecated -static)
 # add additional compiler options (NB build fails with: '-Werror')
 # '-Qunused-arguments' is clang only option and breaks GCC builds
@@ -82,9 +82,16 @@ endif()
 
 add_executable(get-uuid ${SOURCES})
 
+message(NOTICE "++ Checking required libraries ++")
 INCLUDE(CheckFunctionExists)
 CHECK_FUNCTION_EXISTS(uuid_generate_random HAVE_UUID_GENERATE_RANDOM)
+if (NOT HAVE_UUID_GENERATE_RANDOM)
+    message(STATUS "Warning: no 'uuid_generate_random' function found - will use external library 'uuidlib'.")
+else ()
+    message(STATUS "Found 'uuid_generate_random' function.")
+endif()
 
+message(NOTICE "++ Obtaining required supporting external libraries ++")
 # Use 'vcpkg' if available
 if (DEFINED ENV{VCPKG_ROOT} AND DEFINED CMAKE_TOOLCHAIN_FILE)
     find_package(fmt CONFIG REQUIRED)
