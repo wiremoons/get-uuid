@@ -1,4 +1,4 @@
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/hyperium/hyper/master/LICENSE) [![CodeQL](https://github.com/wiremoons/get-uuid/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/wiremoons/get-uuid/actions/workflows/codeql-analysis.yml)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/hyperium/hyper/master/LICENSE) [![CodeQL](https://github.com/wiremoons/get-uuid/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/wiremoons/get-uuid/actions/workflows/codeql-analysis.yml) [![get-uuid-build](https://github.com/wiremoons/get-uuid/actions/workflows/get-uuid-build.yml/badge.svg)](https://github.com/wiremoons/get-uuid/actions/workflows/get-uuid-build.yml)
 
 # get-uuid
 CLI app to generate a random Universally Unique Identifier (UUID).
