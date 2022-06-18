@@ -56,9 +56,11 @@ build.nosync/
 bin/
 build
 
-
 # ignore Clion settings
 .idea/
+
+# ignore VSCode settings
+.vscode/
 
 # ignore keys file used for development reference
 keys.txt
