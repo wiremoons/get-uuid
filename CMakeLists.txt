@@ -11,7 +11,7 @@ message(STATUS "CMake version is: ${CMAKE_VERSION}")
 set (CMAKE_DEBUG_FIND_MODE=1)
 
 # required before 'project' below - detects and uses 'vcpkg' if available.
-# to test CMake 'FetchContent' use: 'unset VCPKG_ROOT'
+# requires env: VCPKG_ROOT  to be set to 'vcpkg' install location
 message(NOTICE "++ Looking for 'vcpkg' install ++")
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   message(STATUS "Using 'vcpkg' found at: $ENV{VCPKG_ROOT}")
@@ -22,8 +22,8 @@ if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   # below needed as 'vcpkg.json' versions feature is experimental currently
   set(VCPKG_FEATURE_FLAGS "versions")
   message(STATUS "'vcpkg' versions feature enabled")
-else ()
-  message(STATUS "'vcpkg' not found - fallback to CMake 'FetchContent'")
+else () 
+    message (FATAL_ERROR "'vcpkg' not found - see install help: 'https://vcpkg.io/en/getting-started.html'. CMake exit.")
 endif()
 
 project(get-uuid)
@@ -91,7 +91,7 @@ else ()
     message(STATUS "Found 'uuid_generate_random' function.")
 endif()
 
-message(NOTICE "++ Obtaining required supporting external libraries ++")
+message(NOTICE "++ Obtaining required supporting external libraries with 'vcpkg' ++")
 # Use 'vcpkg' if available
 if (DEFINED ENV{VCPKG_ROOT} AND DEFINED CMAKE_TOOLCHAIN_FILE)
     find_package(fmt CONFIG REQUIRED)
@@ -99,36 +99,12 @@ if (DEFINED ENV{VCPKG_ROOT} AND DEFINED CMAKE_TOOLCHAIN_FILE)
     if (NOT HAVE_UUID_GENERATE_RANDOM)
         find_package(unofficial-libuuid CONFIG REQUIRED)
     endif()
-
 else ()
-    set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE BOOL "")
-    include(FetchContent)
-
-    # Add libraries to be fetched below:
-    FetchContent_Declare(
-      fmt
-      GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-      GIT_TAG 8.1.1)
-    FetchContent_MakeAvailable(fmt)
-
-    FetchContent_Declare(
-      argparse
-      GIT_REPOSITORY https://github.com/p-ranav/argparse.git
-      GIT_TAG v2.2)
-    FetchContent_MakeAvailable(argparse)
-
-    if (NOT HAVE_UUID_GENERATE_RANDOM)
-        FetchContent_Declare(
-            libuuid
-            GIT_REPOSITORY https://sourceforge.net/projects/libuuid
-            GIT_TAG 1.0.3)
-        FetchContent_MakeAvailable(libuuid)
-    endif()
-
+    message (FATAL_ERROR "'vcpkg CMAKE_TOOLCHAIN_FILE' not found - see install help: 'https://vcpkg.io/en/getting-started.html'")
 endif()
 
 if (HAVE_UUID_GENERATE_RANDOM)
     target_link_libraries(get-uuid PRIVATE fmt::fmt argparse::argparse)
-else ()
+else (DEFINED ENV{VCPKG_ROOT} AND DEFINED CMAKE_TOOLCHAIN_FILE)
     target_link_libraries(get-uuid PRIVATE fmt::fmt argparse::argparse unofficial::UUID::uuid)
 endif()
