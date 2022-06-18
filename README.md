@@ -3,6 +3,9 @@
 # get-uuid
 CLI app to generate a random Universally Unique Identifier (UUID).
 
+# Original program use case
+The application was created as I needed to add a UUID to each record of a 18,000+ record database. I needed to generate the UUIDs quickly in a format I could 'cut and paste' the output of into a JSON database export, before re-populating the database with the additional UUID field, and all the prior existing data. This was carried out as part of a 'record clean up' exercise on the database.
+
 ## Executing the program
 
 The application is command line application that is run from a terminal program on *macOS*, *Linux*, or *Windows*. Example of the basic output from executing the program `get-uuid` is as below.
