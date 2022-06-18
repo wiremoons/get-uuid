@@ -10,7 +10,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   # Set location for vcpkg install
-  VCPKG_ROOT: ~/.vcpkg
+  VCPKG_ROOT: $HOME/.vcpkg
 
 jobs:
   build:
@@ -28,28 +28,29 @@ jobs:
         sh ${{env.VCPKG_ROOT}}/bootstrap-vcpkg.sh
         ${{env.VCPKG_ROOT}}/vcpkg --version
         echo "${{env.VCPKG_ROOT}}" >> $GITHUB_PATH
-        env
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: |
-        printf "'vcpkg' version is: "
-        ${{env.VCPKG_ROOT}}/vcpkg --version
-        printf "Runing cmake build...\n"
         cmake -S . -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build
 
-    - name: Exec
+    - name: Execution checks
       # Exec the built application
       run: |
+        printf "\nShow version: "
         ${{github.workspace}}/bin/get-uuid -v
+        printf "\nDefault output: "
         ${{github.workspace}}/bin/get-uuid
+        printf "\nGenerate six UUIDs output: "
         ${{github.workspace}}/bin/get-uuid -n 6
+        printf "\nGenerate six UUIDs in JSON format output: "
         ${{github.workspace}}/bin/get-uuid -j -n 6
+        printf "\nShow help output: "
         ${{github.workspace}}/bin/get-uuid -h
 
     #- name: Test
