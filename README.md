@@ -47,7 +47,7 @@ cmake --build build
 
 The resulting program is in located the `./bin/` sub-directory.
 
-To detect and use `vcpkg` the `cmake` process looks for the environment variable `VCPKG_ROOT`. Set this to the location of `vcpkg` installation. For assistance wiht installing 'vcpkg' see: [Get started with vcpkg](https://vcpkg.io/en/getting-started.html).
+To detect and use `vcpkg` the `cmake` process looks for the environment variable `VCPKG_ROOT`. Set this to the location of `vcpkg` installation. For assistance with installing `vcpkg` see: [Get started with vcpkg](https://vcpkg.io/en/getting-started.html).
 ```
 # Most Unix (Linux, macOS, etc):
 export VCPKG_ROOT=~/.vcpkg
