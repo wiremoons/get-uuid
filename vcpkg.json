@@ -3,19 +3,9 @@
   "name": "get-uuid",
   "version-string": "0.1.0",
   "dependencies": [
-    {
-      "name": "fmt",
-      "version>=": "8.1.1"
-    },
-    {
-      "name": "argparse",
-      "version>=": "2.2"
-    },
-    {
-      "name": "libuuid",
-      "platform": "!osx & !windows",
-      "version>=": "1.0.3#11"
-    }
+    {"name": "fmt", "version>=": "8.1.1"},
+    {"name": "argparse", "version>=": "2.2"},
+    {"name": "libuuid", "platform": "!osx & !windows", "version>=": "1.0.3#11"}
   ],
-  "builtin-baseline": "faed44dfa013088fe1910908a8a65887622f412f"
+  "builtin-baseline": "b49b2bdf22559c89eddbf29a29621a1dc6929320"
 }
