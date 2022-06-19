@@ -8,7 +8,8 @@
 #
 cmake_minimum_required(VERSION 3.20)
 message(STATUS "CMake version is: ${CMAKE_VERSION}")
-set (CMAKE_DEBUG_FIND_MODE=1)
+# enable debugging for a subset of find calls
+set (CMAKE_DEBUG_FIND_MODE=TRUE)
 
 # required before 'project' below - detects and uses 'vcpkg' if available.
 # requires env: VCPKG_ROOT  to be set to 'vcpkg' install location
@@ -22,6 +23,8 @@ if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   # below needed as 'vcpkg.json' versions feature is experimental currently
   set(VCPKG_FEATURE_FLAGS "versions")
   message(STATUS "'vcpkg' versions feature enabled")
+elseif(DEFINED CMAKE_TOOLCHAIN_FILE)
+    message(STATUS "Existing 'vcpkg' toolchain set to: ${CMAKE_TOOLCHAIN_FILE}")
 else () 
     message (FATAL_ERROR "'vcpkg' not found - see install help: 'https://vcpkg.io/en/getting-started.html'. CMake exit.")
 endif()
@@ -92,7 +95,7 @@ else ()
 endif()
 
 message(NOTICE "++ Obtaining required supporting external libraries with 'vcpkg' ++")
-# Use 'vcpkg' if available
+# Use 'vcpkg' - exit if not available
 if (DEFINED ENV{VCPKG_ROOT} AND DEFINED CMAKE_TOOLCHAIN_FILE)
     find_package(fmt CONFIG REQUIRED)
     find_package(argparse CONFIG REQUIRED)
@@ -103,6 +106,7 @@ else ()
     message (FATAL_ERROR "'vcpkg CMAKE_TOOLCHAIN_FILE' not found - see install help: 'https://vcpkg.io/en/getting-started.html'")
 endif()
 
+# build with correct libraries - link to 'libuuid' only if on Linux OS.
 if (HAVE_UUID_GENERATE_RANDOM)
     target_link_libraries(get-uuid PRIVATE fmt::fmt argparse::argparse)
 else (DEFINED ENV{VCPKG_ROOT} AND DEFINED CMAKE_TOOLCHAIN_FILE)
