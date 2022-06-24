@@ -33,6 +33,46 @@ std::string getUuidString()
     return str_uuid;
 }
 
+std::string const getCompilerVersion()
+{
+#ifdef __clang__
+    return fmt::format("clang {}", __clang_version__);
+#elif __GNUC__
+    return fmt::format("GNU GCC {}", __VERSION__);
+#elif _MSC_VER
+    return = fmt::format("Microsoft {}", _MSC_FULL_VER);
+#elif __MINGW64__
+    return = fmt::format("mingw64 {}", __MINGW64_VERSION_MAJOR);
+#else
+    return = "UNKNOWN";
+#endif
+}
+
+std::string const getBuildType()
+{
+#if DEBUG
+    return "Debug";
+#else
+    return "Release";
+#endif
+}
+
+std::string const printVersionScreen(std::string const &APP_NAME, std::string const &APP_VERSION)
+{
+    std::string version_ouput = fmt::format("\n'{}' version is: '{}'\n", APP_NAME, APP_VERSION);
+    version_ouput.append(fmt::format("Compiled on: '{} @ {}'.\n", __DATE__, __TIME__));
+    version_ouput.append(fmt::format("Copyright (c) 2022 Simon Rowe.\n\n"));
+    version_ouput.append(
+        fmt::format("C++ source built as '{}' using compiler '{}'.\n\n", getBuildType(), getCompilerVersion()));
+    version_ouput.append(fmt::format("Included library versions:\n"));
+    version_ouput.append(fmt::format("- fmt version: '{}'\n", FMT_VERSION));
+    version_ouput.append(fmt::format("\nFor licenses and further information visit:\n"
+                                     "- get-uuid:      https://github.com/wiremoons/get-uuid\n"
+                                     "- argparse:      https://github.com/p-ranav/argparse\n"
+                                     "- fmt:           https://github.com/fmtlib/fmt\n"));
+    return version_ouput;
+}
+
 //////////////////////////////////////////////////////////////////////////////
 //            Application entry point :  main()                             //
 //////////////////////////////////////////////////////////////////////////////
@@ -40,7 +80,10 @@ std::string getUuidString()
 int main(int argc, char *argv[])
 {
 
-    argparse::ArgumentParser program("get-uuid");
+    const std::string APP_NAME = argv[0];
+    const std::string APP_VERSION{"0.1.1"};
+
+    argparse::ArgumentParser program("get-uuid", printVersionScreen(APP_NAME, APP_VERSION));
     program.add_argument("-j").help("Output UUID as JSON object.").default_value(false).implicit_value(true);
     program.add_argument("-n").help("Number of UUID to generate and output.").default_value(1).scan<'i', int>();
 
