@@ -17,7 +17,7 @@ message(NOTICE "++ Looking for 'vcpkg' install ++")
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   message(STATUS "Using 'vcpkg' found at: $ENV{VCPKG_ROOT}")
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-      CACHE STRING "")
+      CACHE STRING "Vcpkg toolchain file")
   set(VCPKG_LIBRARY_LINKAGE static)
   message(STATUS "'vcpkg' static build set")
   # below needed as 'vcpkg.json' versions feature is experimental currently
