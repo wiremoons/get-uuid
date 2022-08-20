@@ -7,7 +7,7 @@
  * @source https://github.com/wiremoons/get-uuid
  * @date originally created: 06 June 2022
  *
- * @details Program generates a a number of stated UUID Keys and outputs
+ * @details Program generates a number of stated UUID Keys and outputs
  * them in a format for pasting into a JSON file.
  * Was created to add a primary key uuid to a JSON database export file.
  * Example output:  "Key": "1540CA00-BB31-4491-84A9-981F652A6B9E",
@@ -59,18 +59,18 @@ std::string const getBuildType()
 
 std::string const printVersionScreen(std::string const &APP_NAME, std::string const &APP_VERSION)
 {
-    std::string version_ouput = fmt::format("\n'{}' version is: '{}'\n", APP_NAME, APP_VERSION);
-    version_ouput.append(fmt::format("Compiled on: '{} @ {}'.\n", __DATE__, __TIME__));
-    version_ouput.append(fmt::format("Copyright (c) 2022 Simon Rowe.\n\n"));
-    version_ouput.append(
+    std::string version_output = fmt::format("\n'{}' version is: '{}'\n", APP_NAME, APP_VERSION);
+    version_output.append(fmt::format("Compiled on: '{} @ {}'.\n", __DATE__, __TIME__));
+    version_output.append(fmt::format("Copyright (c) 2022 Simon Rowe.\n\n"));
+    version_output.append(
         fmt::format("C++ source built as '{}' using compiler '{}'.\n\n", getBuildType(), getCompilerVersion()));
-    version_ouput.append(fmt::format("Included library versions:\n"));
-    version_ouput.append(fmt::format("- fmt version: '{}'\n", FMT_VERSION));
-    version_ouput.append(fmt::format("\nFor licenses and further information visit:\n"
-                                     "- get-uuid:      https://github.com/wiremoons/get-uuid\n"
-                                     "- argparse:      https://github.com/p-ranav/argparse\n"
-                                     "- fmt:           https://github.com/fmtlib/fmt\n"));
-    return version_ouput;
+    version_output.append(fmt::format("Included library versions:\n"));
+    version_output.append(fmt::format("- fmt version: '{}'\n", FMT_VERSION));
+    version_output.append(fmt::format("\nFor licenses and further information visit:\n"
+                                      "- get-uuid:      https://github.com/wiremoons/get-uuid\n"
+                                      "- argparse:      https://github.com/p-ranav/argparse\n"
+                                      "- fmt:           https://github.com/fmtlib/fmt\n"));
+    return version_output;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 {
 
     const std::string APP_NAME = argv[0];
-    const std::string APP_VERSION{"0.1.1"};
+    const std::string APP_VERSION{"0.1.2"};
 
     argparse::ArgumentParser program("get-uuid", printVersionScreen(APP_NAME, APP_VERSION));
     program.add_argument("-j").help("Output UUID as JSON object.").default_value(false).implicit_value(true);
