@@ -23,6 +23,7 @@
 #include <fmt/format.h>
 #include <uuid/uuid.h>
 
+// Function to return a random UUID as a string
 std::string getUuidString()
 {
     uuid_t uuid;
@@ -33,6 +34,7 @@ std::string getUuidString()
     return str_uuid;
 }
 
+// Function to return the version of the C++ compiler used to build the app
 std::string const getCompilerVersion()
 {
 #ifdef __clang__
@@ -48,6 +50,7 @@ std::string const getCompilerVersion()
 #endif
 }
 
+// Function to return the app build kind
 std::string const getBuildType()
 {
 #if DEBUG
@@ -57,7 +60,8 @@ std::string const getBuildType()
 #endif
 }
 
-std::string const printVersionScreen(std::string const &APP_NAME, std::string const &APP_VERSION)
+// Function to return a formated string containing the app version details
+std::string const createVersionScreen(std::string const &APP_NAME, std::string const &APP_VERSION)
 {
     std::string version_output = fmt::format("\n'{}' version is: '{}'\n", APP_NAME, APP_VERSION);
     version_output.append(fmt::format("Compiled on: '{} @ {}'.\n", __DATE__, __TIME__));
@@ -81,9 +85,9 @@ int main(int argc, char *argv[])
 {
 
     const std::string APP_NAME = argv[0];
-    const std::string APP_VERSION{"0.1.2"};
+    const std::string APP_VERSION{"0.1.3"};
 
-    argparse::ArgumentParser program("get-uuid", printVersionScreen(APP_NAME, APP_VERSION));
+    argparse::ArgumentParser program("get-uuid", createVersionScreen(APP_NAME, APP_VERSION));
     program.add_argument("-j").help("Output UUID as JSON object.").default_value(false).implicit_value(true);
     program.add_argument("-n").help("Number of UUID to generate and output.").default_value(1).scan<'i', int>();
 
