@@ -1,11 +1,11 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
   "name": "get-uuid",
-  "version-string": "0.1.2",
+  "version-string": "0.1.3",
   "dependencies": [
     {"name": "fmt", "version>=": "8.1.1"},
     {"name": "argparse", "version>=": "2.2"},
     {"name": "libuuid", "platform": "!osx & !windows", "version>=": "1.0.3#11"}
   ],
-  "builtin-baseline": "01b29f6d8212bc845da64773b18665d682f5ab66"
+  "builtin-baseline": "5f82fa45df07a446bab57f65479f3d2df797f408"
 }
