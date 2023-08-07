@@ -60,12 +60,12 @@ std::string const getBuildType()
 #endif
 }
 
-// Function to return a formated string containing the app version details
+// Function to return a formatted string containing the app version details
 std::string const createVersionScreen(std::string const &APP_NAME, std::string const &APP_VERSION)
 {
     std::string version_output = fmt::format("\n'{}' version is: '{}'\n", APP_NAME, APP_VERSION);
     version_output.append(fmt::format("Compiled on: '{} @ {}'.\n", __DATE__, __TIME__));
-    version_output.append(fmt::format("Copyright (c) 2022 Simon Rowe.\n\n"));
+    version_output.append(fmt::format("Copyright (c) 2022-2023 Simon Rowe.\n\n"));
     version_output.append(
         fmt::format("C++ source built as '{}' using compiler '{}'.\n\n", getBuildType(), getCompilerVersion()));
     version_output.append(fmt::format("Included library versions:\n"));
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 {
 
     const std::string APP_NAME = argv[0];
-    const std::string APP_VERSION{"0.1.3"};
+    const std::string APP_VERSION{"0.1.4"};
 
     argparse::ArgumentParser program("get-uuid", createVersionScreen(APP_NAME, APP_VERSION));
     program.add_argument("-j").help("Output UUID as JSON object.").default_value(false).implicit_value(true);
